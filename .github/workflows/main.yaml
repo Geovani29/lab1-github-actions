@@ -1,0 +1,22 @@
+name: Deploy to Minikube
+
+on:
+  push:
+    branches:
+      - main # O la rama que uses como principal
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Start minikube
+        uses: medyagh/setup-minikube@master
+
+      - name: Deploy to minikube
+        run: kubectl apply -f k8s-node-app.yaml
+
+      - name: Test service URLs
+        run: minikube service list
